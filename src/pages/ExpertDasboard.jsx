@@ -191,9 +191,48 @@ const ExpertDashboard = () => {
   return (
     <div>
       <h2 className="text-center mt-4 text-success">Expert Dashboard</h2>
+      {/* Move Dialogs OUTSIDE the sidebar and .d-flex */}
+      <Dialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+      >
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this crop?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDeleteDialog(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openUpdateDialog}
+        onClose={() => setOpenUpdateDialog(false)}
+      >
+        <DialogTitle>Confirm Update</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to update this crop?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenUpdateDialog(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmUpdate} color="success">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div className="d-flex">
         {/* Sidebar */}
-        <div
+        {/* <div
           className="sidebar p-2 border-end"
           style={{ width: "250px", background: "#f8f9fa" }}
         >
@@ -205,54 +244,6 @@ const ExpertDashboard = () => {
                 className="list-group-item d-flex justify-content-between align-items-center"
               >
                 <span>{crop.cropName}</span>
-
-                {/* Delete Confirmation Dialog */}
-                <Dialog
-                  open={openDeleteDialog}
-                  onClose={() => setOpenDeleteDialog(false)}
-                >
-                  <DialogTitle>Confirm Delete</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText>
-                      Are you sure you want to delete this crop?
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                      onClick={() => setOpenDeleteDialog(false)}
-                      color="primary"
-                    >
-                      Cancel
-                    </Button>
-                    <Button onClick={handleConfirmDelete} color="error">
-                      Delete
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-
-                {/* Update Confirmation Dialog */}
-                <Dialog
-                  open={openUpdateDialog}
-                  onClose={() => setOpenUpdateDialog(false)}
-                >
-                  <DialogTitle>Confirm Update</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText>
-                      Are you sure you want to update this crop?
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                      onClick={() => setOpenUpdateDialog(false)}
-                      color="primary"
-                    >
-                      Cancel
-                    </Button>
-                    <Button onClick={handleConfirmUpdate} color="success">
-                      Confirm
-                    </Button>
-                  </DialogActions>
-                </Dialog>
                 <button
                   className="btn btn-sm btn-primary me-1"
                   onClick={() => handleOpenUpdateDialog(crop.id)}
@@ -268,8 +259,86 @@ const ExpertDashboard = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
+        <div
+          className="sidebar p-2 border-end"
+          style={{ width: "250px", background: "#f8f9fa" }}
+        >
+          <h5>Added Crops</h5>
+          <ul className="list-group">
+            {crops.map((crop, index) => (
+              <li
+                key={crop.id ?? `local-${index}`}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <span>{crop.cropName}</span>
 
+                <button
+                  className="btn btn-sm btn-primary me-1"
+                  onClick={() => handleOpenUpdateDialog(crop.id)}
+                  disabled={!crop.id}
+                >
+                  Update
+                </button>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={() => crop.id && handleOpenDeleteDialog(crop.id)}
+                  disabled={!crop.id}
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          {/* Delete Confirmation Dialog */}
+          <Dialog
+            open={openDeleteDialog}
+            onClose={() => setOpenDeleteDialog(false)}
+          >
+            <DialogTitle>Confirm Delete</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete this crop?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => setOpenDeleteDialog(false)}
+                color="primary"
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleConfirmDelete} color="error">
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          {/* Update Confirmation Dialog */}
+          <Dialog
+            open={openUpdateDialog}
+            onClose={() => setOpenUpdateDialog(false)}
+          >
+            <DialogTitle>Confirm Update</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to update this crop?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => setOpenUpdateDialog(false)}
+                color="primary"
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleConfirmUpdate} color="success">
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
         {/* Main Content */}
         <div className="container mt-2">
           {successMessage && (
